@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Analisis Mistik V2.0</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+    background:#07111f;
+    color:white;
+}
+
+.app{
+    width:100%;
+    max-width:700px;
+    margin:auto;
+    padding:15px;
+}
+
+.header{
+    background:#10243d;
+    padding:20px;
+    border-radius:15px;
+    text-align:center;
+    margin-bottom:15px;
+}
+
+.header h1{
+    margin:0;
+    font-size:23px;
+}
+
+.header p{
+    color:#9fb5c9;
+    font-size:13px;
+}
+
+.card{
+    background:#0d1c2e;
+    border:1px solid #284966;
+    border-radius:15px;
+    padding:15px;
+    margin-bottom:15px;
+}
+
+label{
+    display:block;
+    margin-bottom:8px;
+}
+
+input{
+    width:100%;
+    padding:15px;
+    background:#07111f;
+    border:1px solid #315777;
+    border-radius:10px;
+    color:white;
+    font-size:22px;
+    text-align:center;
+    letter-spacing:6px;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    margin-top:10px;
+    border:0;
+    border-radius:10px;
+    background:#1976d2;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.result{
+    margin-top:15px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.box{
+    background:#07111f;
+    border:1px solid #29465f;
+    border-radius:10px;
+    padding:15px;
+    text-align:center;
+}
+
+.title{
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:12px;
+}
+
+.nama{
+    color:#8fa8bd;
+    font-size:12px;
+}
+
+.angka{
+    font-size:22px;
+    font-weight:bold;
+    margin-top:7px;
+    letter-spacing:3px;
+}
+
+#hasil{
+    display:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="header">
+
+        <h1>
+            ANALISIS MISTIK V2.0
+        </h1>
+
+        <p>
+            ML • Mb • Indx • Ty • MO • M9
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <label>
+            Masukkan Result Terakhir
+        </label>
+
+        <input
+            id="result"
+            type="tel"
+            maxlength="4"
+            placeholder="1234"
+        >
+
+        <button onclick="hitung()">
+            HITUNG ANALISIS
+        </button>
+
+    </div>
+
+
+    <div id="hasil">
+
+
+        <div class="card">
+
+            <div class="title">
+                HASIL RUMUS
+            </div>
+
+            <div class="grid">
+
+                <div class="box">
+                    <div class="nama">MISTIK LAMA</div>
+                    <div class="angka" id="ml"></div>
+                </div>
+
+
+                <div class="box">
+                    <div class="nama">MISTIK BARU</div>
+                    <div class="angka" id="mb"></div>
+                </div>
+
+
+                <div class="box">
+                    <div class="nama">INDEX</div>
+                    <div class="angka" id="indx"></div>
+                </div>
+
+
+                <div class="box">
+                    <div class="nama">TYSEN</div>
+                    <div class="angka" id="ty"></div>
+                </div>
+
+
+                <div class="box">
+                    <div class="nama">MISTIK 0</div>
+                    <div class="angka" id="mo"></div>
+                </div>
+
+
+                <div class="box">
+                    <div class="nama">MISTIK 9</div>
+                    <div class="angka" id="m9"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="title">
+                POSISI
+            </div>
+
+            <div class="grid">
+
+                <div class="box">
+                    <div class="nama">AS</div>
+                    <div class="angka" id="as"></div>
+                </div>
+
+                <div class="box">
+                    <div class="nama">KOP</div>
+                    <div class="angka" id="kop"></div>
+                </div>
+
+                <div class="box">
+                    <div class="nama">KEPALA</div>
+                    <div class="angka" id="kepala"></div>
+                </div>
+
+                <div class="box">
+                    <div class="nama">EKOR</div>
+                    <div class="angka" id="ekor"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="title">
+                TOP 4D SIMULASI
+            </div>
+
+            <div id="top4d" class="grid"></div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ============================
+   RUMUS DARI GAMBAR
+============================ */
+
+const ML = {
+    0:1, 1:0,
+    2:5, 5:2,
+    3:8, 8:3,
+    4:7, 7:4,
+    6:9, 9:6
+};
+
+
+const MB = {
+    0:8, 8:0,
+    2:6, 6:2,
+    3:9, 9:3,
+    4:5, 5:4,
+    7:1, 1:7
+};
+
+
+const INDX = {
+    0:5, 5:0,
+    2:7, 7:2,
+    3:8, 8:3,
+    4:9, 9:4,
+    1:6, 6:1
+};
+
+
+const TY = {
+    0:7, 7:0,
+    2:9, 9:2,
+    3:6, 6:3,
+    4:1, 1:4,
+    5:8, 8:5
+};
+
+
+const MO = {
+    0:6, 6:0,
+    1:5, 5:1,
+    2:8, 8:2,
+    3:7, 7:3,
+    4:9, 9:4
+};
+
+
+const M9 = {
+    0:9, 9:0,
+    1:8, 8:1,
+    2:7, 7:2,
+    3:6, 6:3,
+    4:5, 5:4
+};
+
+
+/* ============================
+   TRANSFORMASI
+============================ */
+
+function ubah(input,rumus){
+
+    return input
+        .split("")
+        .map(function(x){
+
+            return rumus[x];
+
+        })
+        .join("");
+
+}
+
+
+/* ============================
+   HITUNG
+============================ */
+
+function hitung(){
+
+    let input =
+        document.getElementById("result").value;
+
+
+    if(!/^[0-9]{4}$/.test(input)){
+
+        alert("Masukkan 4 digit.");
+
+        return;
+
+    }
+
+
+    /* POSISI */
+
+    document.getElementById("as").innerText =
+        input[0];
+
+    document.getElementById("kop").innerText =
+        input[1];
+
+    document.getElementById("kepala").innerText =
+        input[2];
+
+    document.getElementById("ekor").innerText =
+        input[3];
+
+
+    /* RUMUS */
+
+    document.getElementById("ml").innerText =
+        ubah(input,ML);
+
+    document.getElementById("mb").innerText =
+        ubah(input,MB);
+
+    document.getElementById("indx").innerText =
+        ubah(input,INDX);
+
+    document.getElementById("ty").innerText =
+        ubah(input,TY);
+
+    document.getElementById("mo").innerText =
+        ubah(input,MO);
+
+    document.getElementById("m9").innerText =
+        ubah(input,M9);
+
+
+    /* ============================
+       TOP 4D SIMULASI
+    ============================ */
+
+    let semua =
+        ubah(input,ML) +
+        ubah(input,MB) +
+        ubah(input,INDX) +
+        ubah(input,TY) +
+        ubah(input,MO) +
+        ubah(input,M9);
+
+
+    let digit =
+        [...new Set(semua.split(""))];
+
+
+    let kombinasi = [];
+
+
+    for(let a of digit){
+
+        for(let b of digit){
+
+            for(let c of digit){
+
+                for(let d of digit){
+
+                    kombinasi.push(
+                        a+b+c+d
+                    );
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+    /* Ambil 10 kombinasi */
+
+    let top =
+        kombinasi.slice(0,10);
+
+
+    let html = "";
+
+
+    top.forEach(function(x,i){
+
+        html += `
+
+        <div class="box">
+
+            <div class="nama">
+                TOP ${i+1}
+            </div>
+
+            <div class="angka">
+                ${x}
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+
+    document.getElementById(
+        "top4d"
+    ).innerHTML = html;
+
+
+    document.getElementById(
+        "hasil"
+    ).style.display = "block";
+
+}
+
+</script>
+
+</body>
+</html>
